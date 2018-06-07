@@ -15,7 +15,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Service
-public class BillAndWalletService {
+public class BillAndWalletService extends BillAndWalletServiceThrowableManager{
 
     @Autowired
     private WalletRepository walletRepository;
@@ -24,77 +24,49 @@ public class BillAndWalletService {
 
 
     public void save(Wallet wallet, Bill bill) {
-        if (wallet.isEmpty())
-            throw new WalletEmptyException();
-
-        if (bill.isEmpty())
-            throw new BillEmptyException();
-
+        check(wallet, bill);
         bill.setWallet(wallet);
         Bill savedBill = billRepository.save(bill);
     }
 
-
     public Bill selectById(Wallet wallet, Long billId) {
-        if (wallet.isEmpty())
-            throw new WalletEmptyException();
-        if (billId <= MyBillConstants.INVALID_ID)
-            throw new IllegalArgumentException(billId.toString());
-
+        check(wallet, billId);
         Bill bill = billRepository.findByIdAndWallet(billId, wallet);
         return bill;
     }
 
     public Bill selectByName(Wallet wallet, String name) {
-        if (wallet.isEmpty())
-            throw new WalletEmptyException();
-        if (Verification.isNullOrEmpty(name))
-            throw new IllegalArgumentException(name);
-
+        check(wallet, name);
         Bill bill = billRepository.findByNameAndWallet(name, wallet);
         return bill;
     }
 
     public List<Bill> selectByDate(Wallet wallet, LocalDate payday) {
-        if (wallet.isEmpty())
-            throw new WalletEmptyException();
-
+        checkWallet(wallet);
         List<Bill> bills = billRepository.findByPaydayAndWallet(payday, wallet);
         return bills;
     }
 
     public List<Bill> selectByMonth(Wallet wallet, int month) {
-        if (wallet.isEmpty())
-            throw new WalletEmptyException();
-        if (month == MyBillConstants.INVALID_MONTH)
-            throw new IllegalArgumentException();
-
+        check(wallet, month);
         List<Bill> bills = billRepository.findByPaydayMonthAndWallet(wallet, month);
         return bills;
     }
 
     public List<Bill> selectByYear(Wallet wallet, int year) {
-        if (wallet.isEmpty())
-            throw new WalletEmptyException();
-        if (year == MyBillConstants.INVALID_YEAR)
-            throw new IllegalArgumentException();
-
+        check(wallet, year);
         List<Bill> bills = billRepository.findByPaydayYearAndWallet(wallet, year);
         return bills;
     }
 
     public List<Bill> findByPaidBill(Wallet wallet) {
-        if (wallet.isEmpty())
-            throw new WalletEmptyException();
-
+        checkWallet(wallet);
         List<Bill> bills = billRepository.findByIsPaidAndWallet(true, wallet);
         return bills;
     }
 
     public List<Bill> findByScheduleBill(Wallet wallet) {
-        if (wallet.isEmpty())
-            throw new WalletEmptyException();
-
+        checkWallet(wallet);
         List<Bill> bills = billRepository.findByIsPaidAndWallet(false, wallet);
         return bills;
     }

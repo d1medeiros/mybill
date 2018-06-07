@@ -9,12 +9,10 @@ public class Teste {
     public static void main(String[] args) {
 
 
-        Wallet wallet = new Wallet();
 
-//        wallet.setId(55l);
+        String x = "";
 
-        boolean present = Optional.of(wallet).isPresent();
-        System.out.println(present);
+        System.out.println(Integer.valueOf(x));
 
 
     }
