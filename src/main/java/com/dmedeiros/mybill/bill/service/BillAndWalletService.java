@@ -8,6 +8,8 @@ import com.dmedeiros.mybill.user.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class BillAndWalletService {
 
@@ -17,18 +19,13 @@ public class BillAndWalletService {
     private BillRepository billRepository;
 
 
-    public void saveBill(User user, Bill bill) {
+    public void save(Wallet wallet, Bill bill) {
+        bill.setWallet(wallet);
         Bill savedBill = billRepository.save(bill);
-        Wallet wallet = user.getWallet();
-        wallet.setBill(savedBill);
-        walletRepository.save(wallet);
-
     }
 
-    public void saveSchedule(User user, Bill schedule) {
-        Bill savedSchedule = billRepository.save(schedule);
-        Wallet wallet = user.getWallet();
-        wallet.setSchedule(savedSchedule);
-        walletRepository.save(wallet);
+
+    public void selectById(User user, int billId) {
+
     }
 }

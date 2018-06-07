@@ -17,7 +17,16 @@ public class Bill {
     private int dayToPay;
     @Enumerated(EnumType.STRING)
     private BillType billType;
+    @ManyToOne
+    private Wallet wallet;
 
+    public Wallet getWallet() {
+        return wallet;
+    }
+
+    public void setWallet(Wallet wallet) {
+        this.wallet = wallet;
+    }
 
     public Long getId() {
         return id;

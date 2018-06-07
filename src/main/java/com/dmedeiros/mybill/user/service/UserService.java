@@ -38,7 +38,9 @@ public class UserService {
 
         if (isNew) {
             user.setActive(true);
-            user.setWallet(new Wallet());
+            Wallet wallet = new Wallet();
+            wallet.setUser(user);
+            user.setWallet(wallet);
         }
     }
 

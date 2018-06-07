@@ -3,8 +3,6 @@ package com.dmedeiros.mybill;
 import com.dmedeiros.mybill.bill.model.Bill;
 import com.dmedeiros.mybill.bill.model.BillType;
 import com.dmedeiros.mybill.bill.model.Wallet;
-import com.dmedeiros.mybill.bill.repository.BillRepository;
-import com.dmedeiros.mybill.bill.repository.WalletRepository;
 import com.dmedeiros.mybill.bill.service.BillAndWalletService;
 import com.dmedeiros.mybill.user.model.User;
 import com.dmedeiros.mybill.user.service.UserService;
@@ -34,14 +32,8 @@ public class App {
             salvarUmaConta(userService, billAndWalletService);
 
             //ver uma conta
-                //por id
-                //por nome
-                //por valor
-                //por data
-                //por mes
-                //por ano
-                //por pagamento efetuado
-                //por pagamento a ser realizado
+//            selectBill(userService, billAndWalletService);
+
 
             //remover uma conta
 
@@ -55,30 +47,47 @@ public class App {
         };
     }
 
+    private void selectBill(UserService userService, BillAndWalletService billAndWalletService) {
+        User user = new User();
+//        user = generateAndCheckUser(user, userService);
+
+        //por id
+        int billId = 1;
+        billAndWalletService.selectById(user, billId);
+
+        //por nome
+        //por valor
+        //por data
+        //por mes
+        //por ano
+        //por pagamento efetuado
+        //por pagamento a ser realizado
+    }
+
     private void salvarUmaConta(UserService userService, BillAndWalletService billAndWalletService) {
 
         User user = new User();
 
         //salvar conta extra
-        user = generateUserAndCheck(user, userService);
-        Bill bill = generateBill("churrascario", 100.0, LocalDate.now(), false, BillType.GASTOS, 0);
-        billAndWalletService.saveBill(user, bill);
+        Wallet wallet = generateAndCheckUser(userService);
+        Bill bill = generateBill("churrascario", 100.0, LocalDate.now(), false, BillType.GASTOS_NORMAL, 0);
+        billAndWalletService.save(wallet, bill);
 
 
         // salvar conta tipo schedule
-        user = generateUserAndCheck(user, userService);
-        Bill schedule = generateBill("carro", 600.0, null, true, BillType.GASTOS, 10);
-        billAndWalletService.saveSchedule(user, schedule);
+        wallet = generateAndCheckUser(userService);
+        Bill schedule = generateBill("carro", 600.0, null, true, BillType.GASTOS_PLANEJADO, 10);
+        billAndWalletService.save(wallet, schedule);
 
 
-        user = generateUserAndCheck(user, userService);
-        Bill earning = generateBill("salario", 1000.0, null, false, BillType.GANHO, 5);
-        billAndWalletService.saveSchedule(user, earning);
+        wallet = generateAndCheckUser(userService);
+        Bill earning = generateBill("salario", 1000.0, null, false, BillType.GANHO_PLANEJADO, 5);
+        billAndWalletService.save(wallet, earning);
 
 
-        user = generateUserAndCheck(user, userService);
-        Bill bonus = generateBill("freela", 100.0, LocalDate.now(), true, BillType.GANHO, 0);
-        billAndWalletService.saveBill(user, bonus);
+        wallet = generateAndCheckUser(userService);
+        Bill bonus = generateBill("freela", 100.0, LocalDate.now(), true, BillType.GANHO_NORMAL, 0);
+        billAndWalletService.save(wallet, bonus);
 
     }
 
@@ -93,14 +102,14 @@ public class App {
         return bill;
     }
 
-    private User generateUserAndCheck(User user, UserService userService) {
+    private Wallet generateAndCheckUser(UserService userService) {
 
-        user = new User();
+        User user = new User();
         user.setName("diego medeiros");
         user.setLogin("aian");
         user.setPassword("1234");
         user = userService.verifyIfExists(user);
-        return user;
+        return user.getWallet();
     }
 
     private void saveUser(UserService userService, User user) {
@@ -120,13 +129,13 @@ public class App {
 
         //delete
 //            user.setLogin("xx");
-//            userService.verifyAndRemove(user);
+            userService.verifyAndRemove(user);
 
         //alter
 //            user.setLogin("xx");
 //        System.out.println("last access: " + user.getLastAccess());
-//        user.setLastAccess(LocalDate.now());
-//        userService.verifyAndUpdate(user);
+        user.setLastAccess(LocalDate.now());
+        userService.verifyAndUpdate(user);
 //        System.out.println("last access: " + user.getLastAccess());
     }
 
