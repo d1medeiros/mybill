@@ -10,7 +10,7 @@ import java.util.Objects;
 public class Bill {
 
     @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
     private Double price;
@@ -22,8 +22,11 @@ public class Bill {
     @ManyToOne
     private Wallet wallet;
 
-    public boolean isEmpty(){
-        if (Verification.isNullOrEmpty(this.name) || this.price == 0.0)
+
+    public boolean isEmpty() {
+        if (Verification.isNullOrEmpty(this.name)
+                || this.price == 0.0
+                || this.billType == null)
             return true;
 
         return false;
@@ -104,13 +107,14 @@ public class Bill {
                 Objects.equals(name, bill.name) &&
                 Objects.equals(price, bill.price) &&
                 Objects.equals(payday, bill.payday) &&
-                billType == bill.billType;
+                billType == bill.billType &&
+                Objects.equals(wallet, bill.wallet);
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(id, name, price, payday, isPaid, dayToPay, billType);
+        return Objects.hash(id, name, price, payday, isPaid, dayToPay, billType, wallet);
     }
 
     @Override

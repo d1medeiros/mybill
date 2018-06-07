@@ -3,6 +3,7 @@ package com.dmedeiros.mybill.bill.service;
 import com.dmedeiros.mybill.bill.exception.BillEmptyException;
 import com.dmedeiros.mybill.bill.exception.WalletEmptyException;
 import com.dmedeiros.mybill.bill.model.Bill;
+import com.dmedeiros.mybill.bill.model.BillFactory;
 import com.dmedeiros.mybill.bill.model.Wallet;
 import com.dmedeiros.mybill.bill.repository.BillRepository;
 import com.dmedeiros.mybill.bill.repository.WalletRepository;
@@ -15,7 +16,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Service
-public class BillAndWalletService extends BillAndWalletServiceThrowableManager{
+public class BillAndWalletService extends BillAndWalletServiceThrowableManager {
 
     @Autowired
     private WalletRepository walletRepository;
@@ -69,5 +70,27 @@ public class BillAndWalletService extends BillAndWalletServiceThrowableManager{
         checkWallet(wallet);
         List<Bill> bills = billRepository.findByIsPaidAndWallet(false, wallet);
         return bills;
+    }
+
+    public void remove(Wallet wallet, Bill bill) {
+        check(wallet, bill);
+        bill.setWallet(wallet);
+        billRepository.delete(bill);
+    }
+
+    public void update(Wallet wallet, Bill bill) {
+        check(wallet, bill);
+        Bill billFounded = billRepository.findByIdAndWallet(bill.getId(), wallet);
+        billFounded.setName(bill.getName());
+        billFounded.setPrice(bill.getPrice());
+        billRepository.save(billFounded);
+    }
+
+    public void payBill(Wallet wallet, Bill bill) {
+        checkToPay(wallet, bill);
+        Bill billFounded = billRepository.findByIdAndWallet(bill.getId(), wallet);
+        Bill clone = BillFactory.clone(billFounded);
+        BillFactory.preparePayment(clone);
+        billRepository.save(clone);
     }
 }

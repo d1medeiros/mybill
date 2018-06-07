@@ -37,8 +37,10 @@ public class App {
 
 
             //remover uma conta
+            deleteBill(userService, billAndWalletService);
 
             //alterar uma conta
+            updateBill(userService, billAndWalletService);
 
 
 
@@ -46,6 +48,31 @@ public class App {
 
 
         };
+    }
+
+    private void updateBill(UserService userService, BillAndWalletService billAndWalletService) {
+        Wallet wallet = generateAndCheckUser(userService);
+
+        Bill bill = billAndWalletService.selectByName(wallet, "carro");
+
+//        bill.setName("rodizio japa");
+//        bill.setPrice(90.0);
+//        billAndWalletService.update(wallet, bill);
+
+        billAndWalletService.payBill(wallet, bill);
+
+
+
+    }
+
+    private void deleteBill(UserService userService, BillAndWalletService billAndWalletService) {
+
+        Wallet wallet = generateAndCheckUser(userService);
+
+        Bill bill = billAndWalletService.selectByName(wallet, "freela");
+
+        billAndWalletService.remove(wallet, bill);
+
     }
 
     private void selectBill(UserService userService, BillAndWalletService billAndWalletService) {
@@ -110,7 +137,7 @@ public class App {
         wallet = generateAndCheckUser(userService);
         LocalDate date = LocalDate.now();
         date = date.minusMonths(3);
-        bonus = generateBill("freela 2", 200.0, date, true, BillType.GANHO_NORMAL, 0);
+        bonus = generateBill("hora extra", 200.0, date, true, BillType.GANHO_NORMAL, 0);
         billAndWalletService.save(wallet, bonus);
 
     }

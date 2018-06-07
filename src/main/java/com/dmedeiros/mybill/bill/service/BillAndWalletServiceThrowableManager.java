@@ -1,8 +1,11 @@
 package com.dmedeiros.mybill.bill.service;
 
 import com.dmedeiros.mybill.bill.exception.BillEmptyException;
+import com.dmedeiros.mybill.bill.exception.PaymentException;
 import com.dmedeiros.mybill.bill.exception.WalletEmptyException;
 import com.dmedeiros.mybill.bill.model.Bill;
+import com.dmedeiros.mybill.bill.model.BillGroup;
+import com.dmedeiros.mybill.bill.model.BillType;
 import com.dmedeiros.mybill.bill.model.Wallet;
 import com.dmedeiros.mybill.util.MyBillConstants;
 import com.dmedeiros.mybill.util.Verification;
@@ -15,6 +18,17 @@ public class BillAndWalletServiceThrowableManager {
         checkWallet(wallet);
         if (bill.isEmpty())
             throw new BillEmptyException();
+    }
+
+    protected void checkToPay(Wallet wallet, Bill bill) throws WalletEmptyException, BillEmptyException, PaymentException{
+        checkWallet(wallet);
+
+        if (bill.isEmpty())
+            throw new BillEmptyException();
+
+        if (bill.getBillType().isInGroup(BillGroup.NORMAL))
+            throw new PaymentException(bill.getBillType());
+
     }
 
     protected void check(Wallet wallet, Long value) throws WalletEmptyException, BillEmptyException{
