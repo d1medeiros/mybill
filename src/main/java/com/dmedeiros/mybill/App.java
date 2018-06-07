@@ -12,6 +12,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @SpringBootApplication
 public class App {
@@ -32,7 +33,7 @@ public class App {
             salvarUmaConta(userService, billAndWalletService);
 
             //ver uma conta
-//            selectBill(userService, billAndWalletService);
+            selectBill(userService, billAndWalletService);
 
 
             //remover uma conta
@@ -48,20 +49,36 @@ public class App {
     }
 
     private void selectBill(UserService userService, BillAndWalletService billAndWalletService) {
-        User user = new User();
-//        user = generateAndCheckUser(user, userService);
+        Wallet wallet = generateAndCheckUser(userService);
 
         //por id
-        int billId = 1;
-        billAndWalletService.selectById(user, billId);
+        Long billId = 1l;
+        Bill bill = billAndWalletService.selectById(wallet, billId);
+        System.out.println("por ID: " + bill);
 
         //por nome
-        //por valor
+        Bill churrascaria = billAndWalletService.selectByName(wallet, "churrascaria");
+        System.out.println("por Name: " + churrascaria);
+
         //por data
+        List<Bill> byPayday = billAndWalletService.selectByDate(wallet, LocalDate.now());
+        byPayday.stream().map(s -> "por Payday: " + s).forEach(System.out::println);
+
         //por mes
+        List<Bill> byMonth = billAndWalletService.selectByMonth(wallet, 3);
+        byMonth.stream().map(s -> "por Month: " + s).forEach(System.out::println);
+
         //por ano
+        List<Bill> byYear = billAndWalletService.selectByYear(wallet, 2018);
+        byYear.stream().map(s -> "por Year: " + s).forEach(System.out::println);
+
         //por pagamento efetuado
+        List<Bill> byPaidBill = billAndWalletService.findByPaidBill(wallet);
+        byPaidBill.stream().map(s -> "por Paid Bill: " + s).forEach(System.out::println);
+
         //por pagamento a ser realizado
+        List<Bill> byScheduleBill = billAndWalletService.findByScheduleBill(wallet);
+        byScheduleBill.stream().map(s -> "por Schedule Bill: " + s).forEach(System.out::println);
     }
 
     private void salvarUmaConta(UserService userService, BillAndWalletService billAndWalletService) {
@@ -70,13 +87,13 @@ public class App {
 
         //salvar conta extra
         Wallet wallet = generateAndCheckUser(userService);
-        Bill bill = generateBill("churrascario", 100.0, LocalDate.now(), false, BillType.GASTOS_NORMAL, 0);
+        Bill bill = generateBill("churrascaria", 100.0, LocalDate.now(), true, BillType.GASTOS_NORMAL, 0);
         billAndWalletService.save(wallet, bill);
 
 
         // salvar conta tipo schedule
         wallet = generateAndCheckUser(userService);
-        Bill schedule = generateBill("carro", 600.0, null, true, BillType.GASTOS_PLANEJADO, 10);
+        Bill schedule = generateBill("carro", 600.0, null, false, BillType.GASTOS_PLANEJADO, 10);
         billAndWalletService.save(wallet, schedule);
 
 
@@ -87,6 +104,13 @@ public class App {
 
         wallet = generateAndCheckUser(userService);
         Bill bonus = generateBill("freela", 100.0, LocalDate.now(), true, BillType.GANHO_NORMAL, 0);
+        billAndWalletService.save(wallet, bonus);
+
+
+        wallet = generateAndCheckUser(userService);
+        LocalDate date = LocalDate.now();
+        date = date.minusMonths(3);
+        bonus = generateBill("freela 2", 200.0, date, true, BillType.GANHO_NORMAL, 0);
         billAndWalletService.save(wallet, bonus);
 
     }

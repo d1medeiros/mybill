@@ -1,5 +1,7 @@
 package com.dmedeiros.mybill.bill.model;
 
+import com.dmedeiros.mybill.util.Verification;
+
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.Objects;
@@ -19,6 +21,13 @@ public class Bill {
     private BillType billType;
     @ManyToOne
     private Wallet wallet;
+
+    public boolean isEmpty(){
+        if (Verification.isNullOrEmpty(this.name) || this.price == 0.0)
+            return true;
+
+        return false;
+    }
 
     public Wallet getWallet() {
         return wallet;
@@ -103,4 +112,11 @@ public class Bill {
 
         return Objects.hash(id, name, price, payday, isPaid, dayToPay, billType);
     }
+
+    @Override
+    public String toString() {
+        return String.format("ID: %d nome: %s ", this.id, this.name);
+    }
+
+
 }

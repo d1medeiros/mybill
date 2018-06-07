@@ -4,6 +4,7 @@ import com.dmedeiros.mybill.bill.model.Wallet;
 import com.dmedeiros.mybill.util.Verification;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.Objects;
 
@@ -17,8 +18,9 @@ public class User {
     private String name;
     private boolean active;
     private LocalDate lastAccess;
+    @NotNull
     private String password;
-    @Column(unique = true)
+    @NotNull @Column(unique = true)
     private String login;
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(unique = true)

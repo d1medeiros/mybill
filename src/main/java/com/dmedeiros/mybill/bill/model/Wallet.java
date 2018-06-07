@@ -32,6 +32,11 @@ public class Wallet {
         this.user = user;
     }
 
+    public boolean isEmpty(){
+        if (this.user == null)
+            return true;
 
+        return false;
+    }
 
 }
