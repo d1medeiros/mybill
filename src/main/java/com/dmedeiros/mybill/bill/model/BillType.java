@@ -9,10 +9,8 @@ public enum BillType {
 
 
 
-    GASTOS_NORMAL,
-    GANHO_NORMAL,
-    GASTOS_PLANEJADO,
-    GANHO_PLANEJADO,
+    GASTOS,
+    GANHO,
     DEFAULT
 
 

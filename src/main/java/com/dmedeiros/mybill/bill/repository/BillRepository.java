@@ -22,5 +22,4 @@ public interface BillRepository extends CrudRepository<Bill, Long> {
     @Query("select b from Bill b where year(b.payday) = ?2 and b.wallet = ?1")
     List<Bill> findByPaydayYearAndWallet(Wallet wallet, int year);
 
-    List<Bill> findByIsPaidAndWallet(boolean isPaid, Wallet wallet);
 }

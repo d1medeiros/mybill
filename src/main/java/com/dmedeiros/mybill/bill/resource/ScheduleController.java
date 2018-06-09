@@ -1,7 +1,8 @@
 package com.dmedeiros.mybill.bill.resource;
 
 import com.dmedeiros.mybill.bill.model.Bill;
-import com.dmedeiros.mybill.bill.service.BillAndWalletService;
+import com.dmedeiros.mybill.bill.model.Schedule;
+import com.dmedeiros.mybill.bill.service.ScheduleAndWalletService;
 import com.dmedeiros.mybill.user.model.User;
 import com.dmedeiros.mybill.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,65 +19,50 @@ import java.util.Optional;
 
 
 @RestController
-@RequestMapping(value = "/bill")
-public class BillController {
+@RequestMapping(value = "/schedule")
+public class ScheduleController {
 
     @Autowired
-    BillAndWalletService billAndWalletService;
+    ScheduleAndWalletService scheduleAndWalletService;
 
     @Autowired
     UserService userService;
 
 
     @GetMapping("/{id}")
-    public Bill findBillById(@PathVariable Long id, @RequestParam String token) {
+    public Schedule findScheduleById(@PathVariable Long id, @RequestParam String token) {
         User user = decodeToken(token, userService);
-        return billAndWalletService.selectById(user.getWallet(), id);
+        return scheduleAndWalletService.selectById(user.getWallet(), id);
     }
 
-    @GetMapping("/month/{month}")
-    public List<Bill> findBillByMonth(@PathVariable int month, @RequestParam String token) {
+    @GetMapping("/day/{day}")
+    public List<Schedule> findScheduleByDay(@PathVariable int day, @RequestParam String token) {
         User user = decodeToken(token, userService);
-        return billAndWalletService.selectByMonth(user.getWallet(), month);
-    }
-
-    @GetMapping("/year/{year}")
-    public List<Bill> findBillByYear(@PathVariable int year, @RequestParam String token) {
-        User user = decodeToken(token, userService);
-        return billAndWalletService.selectByYear(user.getWallet(), year);
-    }
-
-    @GetMapping("/payday/{payday}")
-    public List<Bill> findBillByPayday(@DateTimeFormat(iso = DateTimeFormat.ISO.DATE)@PathVariable LocalDate payday
-            , @RequestParam String token) {
-        User user = decodeToken(token, userService);
-        return billAndWalletService.selectByDate(user.getWallet(), payday);
+        return scheduleAndWalletService.selectByDay(user.getWallet(), day);
     }
 
     @PostMapping
-    public ResponseEntity<?> saveBill(@Valid @RequestBody Bill bill, @RequestParam String token) {
+    public ResponseEntity<?> saveSchedule(@Valid @RequestBody Schedule schedule, @RequestParam String token) {
         User user = decodeToken(token, userService);
 
-        return Optional.of(bill)
-                .map(billToBeSaved -> {
-                    Bill savedBill = billAndWalletService.save(user.getWallet(), billToBeSaved);
+        return Optional.of(schedule)
+                .map(scheduleToBeSaved -> {
+                    Schedule savedSchedule = scheduleAndWalletService.save(user.getWallet(), scheduleToBeSaved);
                     URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
                             .path("/{id}")
-                            .buildAndExpand(savedBill.getId())
+                            .buildAndExpand(savedSchedule.getId())
                             .toUri();
                     return ResponseEntity.created(uri).build(); })
                 .orElse(ResponseEntity.noContent().build());
-
     }
-
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable Long id, @RequestParam String token){
         User user = decodeToken(token, userService);
 
         return Optional.of(id)
-                .map(billToDelete -> {
-                    billAndWalletService.remove(user.getWallet(), id);
+                .map(scheduleToDelete -> {
+                    scheduleAndWalletService.remove(user.getWallet(), id);
                     return ResponseEntity.ok().build(); })
                 .get();
 

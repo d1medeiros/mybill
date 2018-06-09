@@ -57,22 +57,6 @@ public class BillAndWalletService extends BillAndWalletServiceThrowableManager {
         return bills;
     }
 
-    public List<Bill> findByPaidBill(Wallet wallet) {
-        checkWallet(wallet);
-        List<Bill> bills = billRepository.findByIsPaidAndWallet(true, wallet);
-        return bills;
-    }
-
-    public List<Bill> findByNotPaidBill(Wallet wallet) {
-        checkWallet(wallet);
-        List<Bill> bills = billRepository.findByIsPaidAndWallet(false, wallet);
-        return bills;
-    }
-
-    public List<Bill> findByScheduleBill(Wallet wallet) {
-        return null;
-    }
-
     public void remove(Wallet wallet, Long id) {
         check(wallet, id);
         billRepository.deleteById(id);
@@ -83,14 +67,9 @@ public class BillAndWalletService extends BillAndWalletServiceThrowableManager {
         Bill billFounded = billRepository.findByIdAndWallet(bill.getId(), wallet);
         billFounded.setName(bill.getName());
         billFounded.setPrice(bill.getPrice());
+        billFounded.setPayday(bill.getPayday());
+        billFounded.setBillType(bill.getBillType());
         billRepository.save(billFounded);
     }
 
-    public void payBill(Wallet wallet, Bill bill) {
-        checkToPay(wallet, bill);
-        Bill billFounded = billRepository.findByIdAndWallet(bill.getId(), wallet);
-        Bill clone = BillFactory.clone(billFounded);
-        BillFactory.preparePayment(clone);
-        billRepository.save(clone);
-    }
 }

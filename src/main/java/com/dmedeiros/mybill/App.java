@@ -2,7 +2,9 @@ package com.dmedeiros.mybill;
 
 import com.dmedeiros.mybill.bill.model.Bill;
 import com.dmedeiros.mybill.bill.model.BillType;
+import com.dmedeiros.mybill.bill.model.Schedule;
 import com.dmedeiros.mybill.bill.service.BillAndWalletService;
+import com.dmedeiros.mybill.bill.service.ScheduleAndWalletService;
 import com.dmedeiros.mybill.user.model.User;
 import com.dmedeiros.mybill.user.service.UserService;
 import org.springframework.boot.CommandLineRunner;
@@ -20,7 +22,7 @@ public class App {
     }
 
     @Bean
-    public CommandLineRunner demo(UserService userService, BillAndWalletService billAndWalletService) {
+    public CommandLineRunner demo(UserService userService, BillAndWalletService billAndWalletService, ScheduleAndWalletService scheduleAndWalletService) {
         return (args) -> {
 
             User user = new User();
@@ -31,20 +33,19 @@ public class App {
             User userSaved = userService.prepareToAndSave(user);
 
             Bill bill = new Bill();
-            bill.setBillType(BillType.GASTOS_NORMAL);
-            bill.setPayday(LocalDate.now());
-            bill.setPaid(true);
-            bill.setPrice(200.22);
             bill.setName("pizza");
+            bill.setPrice(200.22);
+            bill.setPayday(LocalDate.now());
+            bill.setBillType(BillType.GASTOS);
             billAndWalletService.save(userSaved.getWallet(), bill);
 
-            bill = new Bill();
-            bill.setBillType(BillType.GASTOS_PLANEJADO);
-            bill.setPayday(null);
-            bill.setDayToPay(10);
-            bill.setPrice(800.0);
-            bill.setName("carro");
-            billAndWalletService.save(userSaved.getWallet(), bill);
+            Schedule schedule = new Schedule();
+            schedule.setName("carro");
+            schedule.setPrice(800.00);
+            schedule.setDayToPay(10);
+            schedule.setBillType(BillType.GASTOS);
+            scheduleAndWalletService.save(userSaved.getWallet(), schedule);
+
 
 
         };

@@ -4,21 +4,22 @@ import com.dmedeiros.mybill.bill.exception.BillEmptyException;
 import com.dmedeiros.mybill.bill.exception.PaymentException;
 import com.dmedeiros.mybill.bill.exception.WalletEmptyException;
 import com.dmedeiros.mybill.bill.model.Bill;
+import com.dmedeiros.mybill.bill.model.Schedule;
 import com.dmedeiros.mybill.bill.model.Wallet;
 import com.dmedeiros.mybill.util.MyBillConstants;
 import com.dmedeiros.mybill.util.Verification;
 
-public class BillAndWalletServiceThrowableManager {
+public class ScheduleAndWalletServiceThrowableManager {
 
 
 
-    protected void check(Wallet wallet, Bill bill) throws WalletEmptyException, BillEmptyException{
+    protected void check(Wallet wallet, Schedule schedule) throws WalletEmptyException, BillEmptyException{
         checkWallet(wallet);
-        if (bill.isEmpty())
+        if (schedule.isEmpty())
             throw new BillEmptyException();
     }
 
-    protected void checkToPay(Wallet wallet, Bill bill) throws WalletEmptyException, BillEmptyException, PaymentException{
+    protected void checkToPay(Wallet wallet, Schedule schedule) throws WalletEmptyException, BillEmptyException, PaymentException{
 //        checkWallet(wallet);
 //
 //        if (bill.isEmpty())

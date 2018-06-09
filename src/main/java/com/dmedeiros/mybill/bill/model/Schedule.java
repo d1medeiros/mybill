@@ -7,14 +7,15 @@ import javax.persistence.*;
 import java.time.LocalDate;
 
 @Entity
-public class Bill {
+public class Schedule {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
     private Double price;
-    private LocalDate payday;
+    private int dayToPay;
+    private boolean isMonthly;
     @Enumerated(EnumType.STRING)
     private BillType billType;
     @ManyToOne(fetch = FetchType.LAZY)
@@ -27,19 +28,11 @@ public class Bill {
 
         if (Verification.isNullOrEmpty(this.name)
                 || this.price == 0.0
-                || this.payday == null
+                || this.dayToPay == 0
                 || this.billType == null)
             return true;
 
         return false;
-    }
-
-    public Wallet getWallet() {
-        return wallet;
-    }
-
-    public void setWallet(Wallet wallet) {
-        this.wallet = wallet;
     }
 
     public Long getId() {
@@ -66,12 +59,20 @@ public class Bill {
         this.price = price;
     }
 
-    public LocalDate getPayday() {
-        return payday;
+    public int getDayToPay() {
+        return dayToPay;
     }
 
-    public void setPayday(LocalDate payday) {
-        this.payday = payday;
+    public void setDayToPay(int dayToPay) {
+        this.dayToPay = dayToPay;
+    }
+
+    public boolean isMonthly() {
+        return isMonthly;
+    }
+
+    public void setMonthly(boolean monthly) {
+        isMonthly = monthly;
     }
 
     public BillType getBillType() {
@@ -81,6 +82,15 @@ public class Bill {
     public void setBillType(BillType billType) {
         this.billType = billType;
     }
+
+    public Wallet getWallet() {
+        return wallet;
+    }
+
+    public void setWallet(Wallet wallet) {
+        this.wallet = wallet;
+    }
+
 
     @Override
     public String toString() {
