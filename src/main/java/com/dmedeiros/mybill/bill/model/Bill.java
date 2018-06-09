@@ -15,7 +15,7 @@ public class Bill {
     private Long id;
     private String name;
     private Double price;
-    private LocalDate payday = LocalDate.now();
+    private LocalDate payday;
     private boolean isPaid;
     private int dayToPay;
     @Enumerated(EnumType.STRING)

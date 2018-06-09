@@ -63,16 +63,19 @@ public class BillAndWalletService extends BillAndWalletServiceThrowableManager {
         return bills;
     }
 
-    public List<Bill> findByScheduleBill(Wallet wallet) {
+    public List<Bill> findByNotPaidBill(Wallet wallet) {
         checkWallet(wallet);
         List<Bill> bills = billRepository.findByIsPaidAndWallet(false, wallet);
         return bills;
     }
 
-    public void remove(Wallet wallet, Bill bill) {
-        check(wallet, bill);
-        bill.setWallet(wallet);
-        billRepository.delete(bill);
+    public List<Bill> findByScheduleBill(Wallet wallet) {
+        return null;
+    }
+
+    public void remove(Wallet wallet, Long id) {
+        check(wallet, id);
+        billRepository.deleteById(id);
     }
 
     public void update(Wallet wallet, Bill bill) {

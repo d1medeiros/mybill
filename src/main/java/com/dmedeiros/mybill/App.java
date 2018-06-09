@@ -38,6 +38,14 @@ public class App {
             bill.setName("pizza");
             billAndWalletService.save(userSaved.getWallet(), bill);
 
+            bill = new Bill();
+            bill.setBillType(BillType.GASTOS_PLANEJADO);
+            bill.setPayday(null);
+            bill.setDayToPay(10);
+            bill.setPrice(800.0);
+            bill.setName("carro");
+            billAndWalletService.save(userSaved.getWallet(), bill);
+
 
         };
     }
