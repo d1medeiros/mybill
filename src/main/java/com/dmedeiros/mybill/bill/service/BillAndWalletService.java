@@ -40,7 +40,7 @@ public class BillAndWalletService extends BillAndWalletServiceThrowableManager {
     }
 
     public List<Bill> selectByDate(Wallet wallet, LocalDate payday) {
-        checkWallet(wallet);
+        check(wallet);
         List<Bill> bills = billRepository.findByPaydayAndWallet(payday, wallet);
         return bills;
     }
@@ -62,6 +62,7 @@ public class BillAndWalletService extends BillAndWalletServiceThrowableManager {
         billRepository.deleteById(id);
     }
 
+    @Deprecated
     public void update(Wallet wallet, Bill bill) {
         check(wallet, bill);
         Bill billFounded = billRepository.findByIdAndWallet(bill.getId(), wallet);

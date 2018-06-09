@@ -48,6 +48,7 @@ public class ScheduleAndWalletService extends ScheduleAndWalletServiceThrowableM
         scheduleRepository.deleteById(id);
     }
 
+    @Deprecated
     public void update(Wallet wallet, Schedule schedule) {
         check(wallet, schedule);
         Schedule scheduleFounded = scheduleRepository.findByIdAndWallet(schedule.getId(), wallet);

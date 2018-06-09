@@ -4,7 +4,6 @@ import com.dmedeiros.mybill.util.Verification;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
-import java.time.LocalDate;
 
 @Entity
 public class Schedule {
@@ -24,8 +23,6 @@ public class Schedule {
 
     @JsonIgnore
     public boolean isEmpty() {
-//        Assert.hasText(this.name);
-
         if (Verification.isNullOrEmpty(this.name)
                 || this.price == 0.0
                 || this.dayToPay == 0
