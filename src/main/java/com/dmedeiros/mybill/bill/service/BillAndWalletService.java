@@ -1,14 +1,10 @@
 package com.dmedeiros.mybill.bill.service;
 
-import com.dmedeiros.mybill.bill.exception.BillEmptyException;
-import com.dmedeiros.mybill.bill.exception.WalletEmptyException;
 import com.dmedeiros.mybill.bill.model.Bill;
 import com.dmedeiros.mybill.bill.model.BillFactory;
 import com.dmedeiros.mybill.bill.model.Wallet;
 import com.dmedeiros.mybill.bill.repository.BillRepository;
 import com.dmedeiros.mybill.bill.repository.WalletRepository;
-import com.dmedeiros.mybill.util.MyBillConstants;
-import com.dmedeiros.mybill.util.Verification;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,14 +20,15 @@ public class BillAndWalletService extends BillAndWalletServiceThrowableManager {
     private BillRepository billRepository;
 
 
-    public void save(Wallet wallet, Bill bill) {
+    public Bill save(Wallet wallet, Bill bill) {
         check(wallet, bill);
         bill.setWallet(wallet);
-        Bill savedBill = billRepository.save(bill);
+        return billRepository.save(bill);
     }
 
     public Bill selectById(Wallet wallet, Long billId) {
         check(wallet, billId);
+
         Bill bill = billRepository.findByIdAndWallet(billId, wallet);
         return bill;
     }

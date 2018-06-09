@@ -1,9 +1,7 @@
 package com.dmedeiros.mybill.bill.model;
 
-public enum BillGroup {
-
-    PLANEJADO,
-    NORMAL,
+public enum BillTypeAction {
+    GASTOS,
+    GANHO,
     DEFAULT
-
 }

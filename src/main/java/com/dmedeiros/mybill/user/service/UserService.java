@@ -20,15 +20,21 @@ public class UserService {
     private UserRepository userRepository;
 
 
+    public User findUserById(Long id){
+        User user = userRepository.findById(id).get();
+        if (user.isEmpty())
+            throw new UserNotFoundException(id.toString());
 
-
-    public void prepareToAndSave(User user) {
-        prepareUser(user, true);
-        saveUser(user);
+        return user;
     }
 
-    private void saveUser(User user) {
-        userRepository.save(user);
+    public User prepareToAndSave(User user) {
+        prepareUser(user, true);
+        return saveUser(user);
+    }
+
+    private User saveUser(User user) {
+        return userRepository.save(user);
     }
 
     private void prepareUser(User user, boolean isNew) {
@@ -44,7 +50,7 @@ public class UserService {
         }
     }
 
-    private void passwordDigester(User user){
+    private void passwordDigester(User user) {
 
         String password = user.getPassword();
 
@@ -73,11 +79,9 @@ public class UserService {
         return userFound.get();
     }
 
+    private boolean verifyIfIsValid(User user, String message) throws UserException{
 
-
-    private boolean verifyIfIsValid(User user, String message) {
-
-        if (user.isEmpty(user))
+        if (user.isEmpty())
             throw new UserException(message);
 
         return true;
@@ -85,7 +89,7 @@ public class UserService {
 
     private boolean verifyIfIsValid(User user) {
 
-        if (user.isEmpty(user))
+        if (user.isEmpty())
             throw new UserException("user is not valid");
 
         return true;

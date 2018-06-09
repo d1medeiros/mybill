@@ -5,6 +5,7 @@ import com.dmedeiros.mybill.user.model.User;
 
 import javax.persistence.*;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 public class Wallet {
@@ -41,17 +42,7 @@ public class Wallet {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Wallet wallet = (Wallet) o;
-        return Objects.equals(id, wallet.id) &&
-                Objects.equals(user, wallet.user);
-    }
-
-    @Override
-    public int hashCode() {
-
-        return Objects.hash(id, user);
+    public String toString() {
+        return String.format("Wallet - ID: %s", this.id);
     }
 }

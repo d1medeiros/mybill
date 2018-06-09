@@ -17,8 +17,9 @@ public class BillFactory {
     }
 
     public static void changeBillTypeOnPayment(Bill bill) {
-        BillAction action = bill.getBillType().getAction();
-        BillType billType = BillType.buildBillType(BillGroup.NORMAL, action);
+        BillTypeManager billTypeManager = BillTypeManager.getBillTypeManager();
+        BillTypeAction action = billTypeManager.getAction(bill.getBillType());
+        BillType billType = BillTypeManager.buildBillType(BillTypePlan.NORMAL, action);
         bill.setBillType(billType);
     }
 
@@ -28,4 +29,6 @@ public class BillFactory {
         clone.setPaid(true);
         BillFactory.changeBillTypeOnPayment(clone);
     }
+
+
 }

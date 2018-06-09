@@ -1,10 +1,11 @@
 package com.dmedeiros.mybill.bill.model;
 
 import com.dmedeiros.mybill.util.Verification;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.springframework.util.Assert;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.Objects;
 
 @Entity
 public class Bill {
@@ -19,11 +20,14 @@ public class Bill {
     private int dayToPay;
     @Enumerated(EnumType.STRING)
     private BillType billType;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnore
     private Wallet wallet;
 
-
+    @JsonIgnore
     public boolean isEmpty() {
+//        Assert.hasText(this.name);
+
         if (Verification.isNullOrEmpty(this.name)
                 || this.price == 0.0
                 || this.billType == null)
@@ -96,30 +100,10 @@ public class Bill {
         this.billType = billType;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Bill bill = (Bill) o;
-        return isPaid == bill.isPaid &&
-                dayToPay == bill.dayToPay &&
-                Objects.equals(id, bill.id) &&
-                Objects.equals(name, bill.name) &&
-                Objects.equals(price, bill.price) &&
-                Objects.equals(payday, bill.payday) &&
-                billType == bill.billType &&
-                Objects.equals(wallet, bill.wallet);
-    }
-
-    @Override
-    public int hashCode() {
-
-        return Objects.hash(id, name, price, payday, isPaid, dayToPay, billType, wallet);
-    }
 
     @Override
     public String toString() {
-        return String.format("ID: %d nome: %s ", this.id, this.name);
+        return String.format("ID: %d nome: %s %s", this.id, this.name, this.wallet);
     }
 
 

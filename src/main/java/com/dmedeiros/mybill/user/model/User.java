@@ -12,7 +12,7 @@ import java.util.Objects;
 public class User {
 
     @Id
-    @SequenceGenerator(name = "EMP_SEQ", allocationSize = 25, initialValue = 100)
+    @SequenceGenerator(name = "EMP_SEQ", allocationSize = 25, initialValue = 1)
     @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "EMP_SEQ")
     private Long id;
     private String name;
@@ -83,25 +83,7 @@ public class User {
         this.wallet = wallet;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        User user = (User) o;
-        return active == user.active &&
-                Objects.equals(id, user.id) &&
-                Objects.equals(name, user.name) &&
-                Objects.equals(lastAccess, user.lastAccess) &&
-                Objects.equals(password, user.password) &&
-                Objects.equals(login, user.login) &&
-                Objects.equals(wallet, user.wallet);
-    }
 
-    @Override
-    public int hashCode() {
-
-        return Objects.hash(id, name, active, lastAccess, password, login, wallet);
-    }
 
 
     @Override
@@ -109,7 +91,7 @@ public class User {
         return String.format("ID: %d Nome: %s, Login: %s Password: %s ", this.id, this.name, this.login, this.password);
     }
 
-    public boolean isEmpty(User user) {
+    public boolean isEmpty() {
         if (Verification.isNullOrEmpty(this.getLogin())
                 || Verification.isNullOrEmpty(this.getPassword()))
             return true;

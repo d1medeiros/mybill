@@ -1,5 +1,7 @@
 package com.dmedeiros.mybill.util;
 
+import com.dmedeiros.mybill.bill.service.BillAndWalletService;
+
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
