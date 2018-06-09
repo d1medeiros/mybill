@@ -24,6 +24,11 @@ public class ScheduleAndWalletService extends ScheduleAndWalletServiceThrowableM
         return scheduleRepository.save(schedule);
     }
 
+    public List<Schedule> selectAll(Wallet wallet) {
+        check(wallet);
+        return scheduleRepository.findByWallet(wallet);
+    }
+
     public Schedule selectById(Wallet wallet, Long scheduleId) {
         check(wallet, scheduleId);
 

@@ -16,4 +16,6 @@ public interface ScheduleRepository extends CrudRepository<Schedule, Long> {
     Schedule findByNameAndWallet(String name, Wallet wallet);
 
     List<Schedule> findByDayToPayAndWallet(int dayToPay, Wallet wallet);
+
+    List<Schedule> findByWallet(Wallet wallet);
 }

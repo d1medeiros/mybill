@@ -1,7 +1,6 @@
 package com.dmedeiros.mybill.bill.service;
 
 import com.dmedeiros.mybill.bill.model.Bill;
-import com.dmedeiros.mybill.bill.model.BillFactory;
 import com.dmedeiros.mybill.bill.model.Wallet;
 import com.dmedeiros.mybill.bill.repository.BillRepository;
 import com.dmedeiros.mybill.bill.repository.WalletRepository;
@@ -26,9 +25,13 @@ public class BillAndWalletService extends BillAndWalletServiceThrowableManager {
         return billRepository.save(bill);
     }
 
+    public List<Bill> selectAll(Wallet wallet) {
+        check(wallet);
+        return billRepository.findByWallet(wallet);
+    }
+
     public Bill selectById(Wallet wallet, Long billId) {
         check(wallet, billId);
-
         Bill bill = billRepository.findByIdAndWallet(billId, wallet);
         return bill;
     }

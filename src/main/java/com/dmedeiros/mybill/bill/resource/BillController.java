@@ -28,6 +28,12 @@ public class BillController {
     UserService userService;
 
 
+    @GetMapping
+    public List<Bill> findAllBill(@RequestParam String token) {
+        User user = decodeToken(token, userService);
+        return billAndWalletService.selectAll(user.getWallet());
+    }
+
     @GetMapping("/{id}")
     public Bill findBillById(@PathVariable Long id, @RequestParam String token) {
         User user = decodeToken(token, userService);

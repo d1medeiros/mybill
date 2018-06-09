@@ -28,6 +28,11 @@ public class ScheduleController {
     @Autowired
     UserService userService;
 
+    @GetMapping
+    public List<Schedule> findAllSchedule(@RequestParam String token) {
+        User user = decodeToken(token, userService);
+        return scheduleAndWalletService.selectAll(user.getWallet());
+    }
 
     @GetMapping("/{id}")
     public Schedule findScheduleById(@PathVariable Long id, @RequestParam String token) {
