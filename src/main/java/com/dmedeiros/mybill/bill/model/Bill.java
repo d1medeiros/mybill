@@ -37,47 +37,36 @@ public class Bill {
     public Wallet getWallet() {
         return wallet;
     }
-
     public void setWallet(Wallet wallet) {
         this.wallet = wallet;
     }
-
     public Long getId() {
         return id;
     }
-
     public void setId(Long id) {
         this.id = id;
     }
-
     public String getName() {
         return name;
     }
-
     public void setName(String name) {
         this.name = name;
     }
-
     public Double getPrice() {
         return price;
     }
-
     public void setPrice(Double price) {
         this.price = price;
     }
-
     public LocalDate getPayday() {
         return payday;
     }
-
     public void setPayday(LocalDate payday) {
         this.payday = payday;
     }
-
     public BillType getBillType() {
         return billType;
     }
-
     public void setBillType(BillType billType) {
         this.billType = billType;
     }
