@@ -4,6 +4,7 @@ import com.dmedeiros.mybill.bill.model.Schedule;
 import com.dmedeiros.mybill.bill.model.Wallet;
 import com.dmedeiros.mybill.bill.repository.ScheduleRepository;
 import com.dmedeiros.mybill.bill.repository.WalletRepository;
+import com.dmedeiros.mybill.bill.service.throwablemanager.BillAndWalletServiceThrowableManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

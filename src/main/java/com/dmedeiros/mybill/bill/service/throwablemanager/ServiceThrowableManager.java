@@ -1,4 +1,4 @@
-package com.dmedeiros.mybill.bill.service;
+package com.dmedeiros.mybill.bill.service.throwablemanager;
 
 import com.dmedeiros.mybill.bill.exception.EmptyException;
 
