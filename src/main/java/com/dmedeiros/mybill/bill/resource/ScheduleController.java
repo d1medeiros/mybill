@@ -1,20 +1,17 @@
 package com.dmedeiros.mybill.bill.resource;
 
-import com.dmedeiros.mybill.bill.model.Bill;
 import com.dmedeiros.mybill.bill.model.Schedule;
 import com.dmedeiros.mybill.bill.service.ScheduleAndWalletService;
 import com.dmedeiros.mybill.user.model.User;
 import com.dmedeiros.mybill.user.service.UserService;
 import com.dmedeiros.mybill.util.SecurityToken;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
 import java.net.URI;
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -61,6 +58,8 @@ public class ScheduleController {
                     return ResponseEntity.created(uri).build(); })
                 .orElse(ResponseEntity.noContent().build());
     }
+
+
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable Long id, @RequestHeader String token){

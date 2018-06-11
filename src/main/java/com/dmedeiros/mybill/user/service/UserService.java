@@ -11,6 +11,7 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.Optional;
 
 @Service
@@ -56,13 +57,24 @@ public class UserService {
         return isValid;
     }
 
+    public User autenticate(User user){
+        User userVerified = verifyIfExists(user);
+        changeLastAccess(userVerified);
+        return userVerified;
+    }
+
     public User verifyIfExists(User user) {
         prepareUser(user, false);
-        Optional<User> userFound = userRepository.findByLoginAndPassword(user.getLogin(), user.getPassword());
-        if (!userFound.isPresent())
+        Optional<User> userMaybeFound = userRepository.findByLoginAndPassword(user.getLogin(), user.getPassword());
+        if (!userMaybeFound.isPresent())
             throw new UserNotFoundException(user.getLogin());
 
-        return userFound.get();
+        User userFound = userMaybeFound.get();
+        return userFound;
+    }
+
+    private void changeLastAccess(User user){
+        user.setLastAccess(LocalDate.now());
     }
 
     private boolean verifyIfIsValid(User user, String message) throws UserException{

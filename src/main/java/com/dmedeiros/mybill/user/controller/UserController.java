@@ -38,7 +38,7 @@ public class UserController {
 
         return Optional.of(user)
                 .map(userToBeVerify -> {
-                    String userReference = new UserResource(userService.verifyIfExists(userToBeVerify))
+                    String userReference = new UserResource(userService.autenticate(userToBeVerify))
                             .getLink("self")
                             .getHref();
                     return ResponseEntity.created(URI.create(userReference)).build(); })

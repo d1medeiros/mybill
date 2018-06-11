@@ -1,9 +1,9 @@
 package com.dmedeiros.mybill;
 
-import com.dmedeiros.mybill.bill.model.Bill;
+import com.dmedeiros.mybill.bill.model.Paid;
 import com.dmedeiros.mybill.bill.model.BillType;
 import com.dmedeiros.mybill.bill.model.Schedule;
-import com.dmedeiros.mybill.bill.service.BillAndWalletService;
+import com.dmedeiros.mybill.bill.service.PaidAndWalletService;
 import com.dmedeiros.mybill.bill.service.ScheduleAndWalletService;
 import com.dmedeiros.mybill.user.model.User;
 import com.dmedeiros.mybill.user.service.UserService;
@@ -23,7 +23,7 @@ public class App {
     }
 
     @Bean
-    public CommandLineRunner demo(UserService userService, BillAndWalletService billAndWalletService, ScheduleAndWalletService scheduleAndWalletService) {
+    public CommandLineRunner demo(UserService userService, PaidAndWalletService paidAndWalletService, ScheduleAndWalletService scheduleAndWalletService) {
         return (args) -> {
 
             User user = new User();
@@ -36,12 +36,12 @@ public class App {
 
             System.out.println(SecurityToken.generateHash(user));
 
-            Bill bill = new Bill();
-            bill.setName("pizza");
-            bill.setPrice(200.22);
-            bill.setPayday(LocalDate.now());
-            bill.setBillType(BillType.GASTOS);
-            billAndWalletService.save(userSaved.getWallet(), bill);
+            Paid paid = new Paid();
+            paid.setName("pizza");
+            paid.setPrice(200.22);
+            paid.setPayday(LocalDate.now());
+            paid.setBillType(BillType.GASTOS);
+            paidAndWalletService.save(userSaved.getWallet(), paid);
 
             Schedule schedule = new Schedule();
             schedule.setName("carro");

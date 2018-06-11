@@ -1,7 +1,5 @@
 package com.dmedeiros.mybill.bill.service;
 
-import com.dmedeiros.mybill.bill.exception.BillEmptyException;
-import com.dmedeiros.mybill.bill.exception.EmptyException;
 import com.dmedeiros.mybill.bill.exception.ScheduleEmptyException;
 import com.dmedeiros.mybill.bill.model.Schedule;
 import org.springframework.stereotype.Service;

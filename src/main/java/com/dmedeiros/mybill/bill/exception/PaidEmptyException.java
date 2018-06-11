@@ -1,7 +1,9 @@
 package com.dmedeiros.mybill.bill.exception;
 
-public class ScheduleEmptyException extends RuntimeException {
-    public ScheduleEmptyException() {
-        super("Schedule was not filled.");
+import com.dmedeiros.mybill.bill.model.Paid;
+
+public class PaidEmptyException extends BillEmptyException {
+    public PaidEmptyException() {
+        super(Paid.class.getCanonicalName());
     }
 }

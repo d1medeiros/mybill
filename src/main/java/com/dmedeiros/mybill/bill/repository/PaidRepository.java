@@ -8,7 +8,7 @@ import org.springframework.data.repository.CrudRepository;
 import java.time.LocalDate;
 import java.util.List;
 
-public interface BillRepository extends CrudRepository<Paid, Long> {
+public interface PaidRepository extends CrudRepository<Paid, Long> {
 
     Paid findByIdAndWallet(Long billId, Wallet wallet);
 
@@ -16,10 +16,10 @@ public interface BillRepository extends CrudRepository<Paid, Long> {
 
     List<Paid> findByPaydayAndWallet(LocalDate payday, Wallet wallet);
 
-    @Query("select b from Paid b where month(b.payday) = ?2 and b.wallet = ?1")
+    @Query("select p from Paid p where month(p.payday) = ?2 and p.wallet = ?1")
     List<Paid> findByPaydayMonthAndWallet(Wallet wallet, int month);
 
-    @Query("select b from Paid b where year(b.payday) = ?2 and b.wallet = ?1")
+    @Query("select p from Paid p where year(p.payday) = ?2 and p.wallet = ?1")
     List<Paid> findByPaydayYearAndWallet(Wallet wallet, int year);
 
     List<Paid> findByWallet(Wallet wallet);

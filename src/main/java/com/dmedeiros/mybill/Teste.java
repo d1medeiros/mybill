@@ -6,6 +6,7 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTDecodeException;
 import com.auth0.jwt.interfaces.Claim;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import com.dmedeiros.mybill.bill.model.*;
 import com.dmedeiros.mybill.user.model.User;
 
 import javax.crypto.Cipher;
@@ -21,37 +22,42 @@ public class Teste {
     public static void main(String[] args) throws Exception {
 
 
+//        bill
+//        private Long id;
+//        private String name;
+//        private Double price;
+//        private BillType billType;
+//        private Wallet wallet;
+
+//        private LocalDate payday;
+
+//        schedule
+//        private Long id;
+//        private String name;
+//        private Double price;
+//        private BillType billType;
+//        private Wallet wallet;
+
+//        private int dayToPay;
+//        private boolean isMonthly;
+
+        Schedule schedule = new Schedule();
+        schedule.setId(1l);
+        schedule.setName("diego");
+        schedule.setPrice(22.0);
+        schedule.setBillType(BillType.GASTOS);
+        schedule.setWallet(new Wallet());
+
+        schedule.setDayToPay(12);
+        schedule.setMonthly(true);
+
+        Bill bill = schedule;
+
+        System.out.println(bill);
 
 
 
-    }
 
-    private static void b() {
-        try {
-            String text = "Hello World";
-            String key = "Bar12345Bar12345"; // 128 bit key
-
-            // Create key and cipher
-            Key aesKey = new SecretKeySpec(key.getBytes(), "AES");
-
-
-            Cipher cipher = Cipher.getInstance("AES");
-            // encrypt the text
-            cipher.init(Cipher.ENCRYPT_MODE, aesKey);
-            byte[] encrypted = cipher.doFinal(text.getBytes());
-            String s = new String(encrypted);
-
-            System.err.println("encrypted " + s);
-
-            // decrypt the text
-            cipher.init(Cipher.DECRYPT_MODE, aesKey);
-            String decrypted = new String(cipher.doFinal(encrypted));
-
-            System.err.println("decrypted " + decrypted);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
 

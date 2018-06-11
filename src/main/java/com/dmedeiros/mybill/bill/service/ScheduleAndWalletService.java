@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class ScheduleAndWalletService extends ScheduleAndWalletServiceThrowableManager {
+public class ScheduleAndWalletService extends BillAndWalletServiceThrowableManager {
 
     @Autowired
     private WalletRepository walletRepository;
@@ -64,10 +64,12 @@ public class ScheduleAndWalletService extends ScheduleAndWalletServiceThrowableM
         scheduleRepository.save(scheduleFounded);
     }
 
-//    public void payBill(Wallet wallet, Bill schedule) {
+
+
+//    public void payBill(Wallet wallet, Paid schedule) {
 //        checkToPay(wallet, schedule);
-//        Bill scheduleFounded = scheduleRepository.findByIdAndWallet(schedule.getId(), wallet);
-//        Bill clone = BillFactory.clone(scheduleFounded);
+//        Paid scheduleFounded = scheduleRepository.findByIdAndWallet(schedule.getId(), wallet);
+//        Paid clone = BillFactory.clone(scheduleFounded);
 //        BillFactory.preparePayment(clone);
 //        scheduleRepository.save(clone);
 //    }
