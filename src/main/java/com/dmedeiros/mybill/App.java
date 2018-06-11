@@ -7,6 +7,7 @@ import com.dmedeiros.mybill.bill.service.BillAndWalletService;
 import com.dmedeiros.mybill.bill.service.ScheduleAndWalletService;
 import com.dmedeiros.mybill.user.model.User;
 import com.dmedeiros.mybill.user.service.UserService;
+import com.dmedeiros.mybill.util.SecurityToken;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -26,11 +27,14 @@ public class App {
         return (args) -> {
 
             User user = new User();
+            user.setId(1l);
             user.setName("Diego");
             user.setLogin("aian");
             user.setPassword("1234");
 
             User userSaved = userService.prepareToAndSave(user);
+
+            System.out.println(SecurityToken.generateHash(user));
 
             Bill bill = new Bill();
             bill.setName("pizza");

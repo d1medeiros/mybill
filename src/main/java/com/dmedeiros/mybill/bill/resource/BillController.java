@@ -4,6 +4,7 @@ import com.dmedeiros.mybill.bill.model.Bill;
 import com.dmedeiros.mybill.bill.service.BillAndWalletService;
 import com.dmedeiros.mybill.user.model.User;
 import com.dmedeiros.mybill.user.service.UserService;
+import com.dmedeiros.mybill.util.SecurityToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
@@ -29,38 +30,38 @@ public class BillController {
 
 
     @GetMapping
-    public List<Bill> findAllBill(@RequestParam String token) {
+    public List<Bill> findAllBill(@RequestHeader String token) {
         User user = decodeToken(token, userService);
         return billAndWalletService.selectAll(user.getWallet());
     }
 
     @GetMapping("/{id}")
-    public Bill findBillById(@PathVariable Long id, @RequestParam String token) {
+    public Bill findBillById(@PathVariable Long id, @RequestHeader String token) {
         User user = decodeToken(token, userService);
         return billAndWalletService.selectById(user.getWallet(), id);
     }
 
     @GetMapping("/month/{month}")
-    public List<Bill> findBillByMonth(@PathVariable int month, @RequestParam String token) {
+    public List<Bill> findBillByMonth(@PathVariable int month, @RequestHeader String token) {
         User user = decodeToken(token, userService);
         return billAndWalletService.selectByMonth(user.getWallet(), month);
     }
 
     @GetMapping("/year/{year}")
-    public List<Bill> findBillByYear(@PathVariable int year, @RequestParam String token) {
+    public List<Bill> findBillByYear(@PathVariable int year, @RequestHeader String token) {
         User user = decodeToken(token, userService);
         return billAndWalletService.selectByYear(user.getWallet(), year);
     }
 
     @GetMapping("/payday/{payday}")
     public List<Bill> findBillByPayday(@DateTimeFormat(iso = DateTimeFormat.ISO.DATE)@PathVariable LocalDate payday
-            , @RequestParam String token) {
+            , @RequestHeader String token) {
         User user = decodeToken(token, userService);
         return billAndWalletService.selectByDate(user.getWallet(), payday);
     }
 
     @PostMapping
-    public ResponseEntity<?> saveBill(@Valid @RequestBody Bill bill, @RequestParam String token) {
+    public ResponseEntity<?> saveBill(@Valid @RequestBody Bill bill, @RequestHeader String token) {
         User user = decodeToken(token, userService);
 
         return Optional.of(bill)
@@ -75,9 +76,8 @@ public class BillController {
 
     }
 
-
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> delete(@PathVariable Long id, @RequestParam String token){
+    public ResponseEntity<?> delete(@PathVariable Long id, @RequestHeader String token){
         User user = decodeToken(token, userService);
 
         return Optional.of(id)
@@ -88,9 +88,11 @@ public class BillController {
 
     }
 
-    @Deprecated
-    private User decodeToken(String token, UserService userService) {
-        return userService.findUserById(1l);
+
+    private synchronized User decodeToken(String token, UserService userService) {
+        Long userId = SecurityToken.getUserIdFromToken(token);
+        User user = userService.findUserById(userId);
+        return user;
     }
 
 }

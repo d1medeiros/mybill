@@ -6,11 +6,11 @@ import com.dmedeiros.mybill.user.exception.UserNotFoundException;
 import com.dmedeiros.mybill.user.model.User;
 import com.dmedeiros.mybill.user.repository.UserRepository;
 import com.dmedeiros.mybill.util.SecurityAuxiliary;
+import com.dmedeiros.mybill.util.SecurityToken;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.io.UnsupportedEncodingException;
-import java.security.NoSuchAlgorithmException;
 import java.util.Optional;
 
 @Service
@@ -40,27 +40,13 @@ public class UserService {
     private void prepareUser(User user, boolean isNew) {
 
         verifyIfIsValid(user, "usuario nao foi preenchido");
-        passwordDigester(user);
+        SecurityAuxiliary.passwordDigester(user);
 
         if (isNew) {
             user.setActive(true);
             Wallet wallet = new Wallet();
             wallet.setUser(user);
             user.setWallet(wallet);
-        }
-    }
-
-    private void passwordDigester(User user) {
-
-        String password = user.getPassword();
-
-        try {
-            password = SecurityAuxiliary.digester(password);
-            user.setPassword(password);
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
         }
     }
 
@@ -104,4 +90,6 @@ public class UserService {
         if (verify(user))
             saveUser(user);
     }
+
+
 }

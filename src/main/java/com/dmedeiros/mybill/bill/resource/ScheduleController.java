@@ -5,6 +5,7 @@ import com.dmedeiros.mybill.bill.model.Schedule;
 import com.dmedeiros.mybill.bill.service.ScheduleAndWalletService;
 import com.dmedeiros.mybill.user.model.User;
 import com.dmedeiros.mybill.user.service.UserService;
+import com.dmedeiros.mybill.util.SecurityToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
@@ -29,25 +30,25 @@ public class ScheduleController {
     UserService userService;
 
     @GetMapping
-    public List<Schedule> findAllSchedule(@RequestParam String token) {
+    public List<Schedule> findAllSchedule(@RequestHeader String token) {
         User user = decodeToken(token, userService);
         return scheduleAndWalletService.selectAll(user.getWallet());
     }
 
     @GetMapping("/{id}")
-    public Schedule findScheduleById(@PathVariable Long id, @RequestParam String token) {
+    public Schedule findScheduleById(@PathVariable Long id, @RequestHeader String token) {
         User user = decodeToken(token, userService);
         return scheduleAndWalletService.selectById(user.getWallet(), id);
     }
 
     @GetMapping("/day/{day}")
-    public List<Schedule> findScheduleByDay(@PathVariable int day, @RequestParam String token) {
+    public List<Schedule> findScheduleByDay(@PathVariable int day, @RequestHeader String token) {
         User user = decodeToken(token, userService);
         return scheduleAndWalletService.selectByDay(user.getWallet(), day);
     }
 
     @PostMapping
-    public ResponseEntity<?> saveSchedule(@Valid @RequestBody Schedule schedule, @RequestParam String token) {
+    public ResponseEntity<?> saveSchedule(@Valid @RequestBody Schedule schedule, @RequestHeader String token) {
         User user = decodeToken(token, userService);
 
         return Optional.of(schedule)
@@ -62,7 +63,7 @@ public class ScheduleController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> delete(@PathVariable Long id, @RequestParam String token){
+    public ResponseEntity<?> delete(@PathVariable Long id, @RequestHeader String token){
         User user = decodeToken(token, userService);
 
         return Optional.of(id)
@@ -73,9 +74,11 @@ public class ScheduleController {
 
     }
 
-    @Deprecated
-    private User decodeToken(String token, UserService userService) {
-        return userService.findUserById(1l);
+
+    private synchronized User decodeToken(String token, UserService userService) {
+        Long userId = SecurityToken.getUserIdFromToken(token);
+        User user = userService.findUserById(userId);
+        return user;
     }
 
 }
