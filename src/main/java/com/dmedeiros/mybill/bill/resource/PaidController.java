@@ -17,7 +17,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
-
+@CrossOrigin(origins = "http://localhost:3000", maxAge = 36000, exposedHeaders = "Location")
 @RestController
 @RequestMapping(value = "/paid")
 public class PaidController {

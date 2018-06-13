@@ -5,11 +5,13 @@ import com.dmedeiros.mybill.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.util.Optional;
 
+@CrossOrigin(origins = "http://localhost:3000", maxAge = 36000, exposedHeaders = "Location")
 @RestController
 @RequestMapping(value = "/user")
 public class UserController {
@@ -29,14 +31,13 @@ public class UserController {
 
     }
 
-    @PostMapping(consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-    public ResponseEntity<?> autenticateUser(@RequestParam String login, @RequestParam String password) {
+    @PutMapping(consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> autenticateUser(@RequestParam MultiValueMap formData) {
 
-        User user = new User();
-        user.setLogin(login);
-        user.setPassword(password);
+        String login = (String) formData.getFirst("login");
+        String password = (String) formData.getFirst("password");
 
-        return Optional.of(user)
+        return Optional.of(new User(password, login))
                 .map(userToBeVerify -> {
                     String userReference = new UserResource(userService.autenticate(userToBeVerify))
                             .getLink("self")

@@ -26,59 +26,53 @@ public class User {
     @JoinColumn(unique = true)
     private Wallet wallet;
 
+    public User() {
+    }
+
+    public User(@NotNull String password, @NotNull String login) {
+        this.password = password;
+        this.login = login;
+    }
 
     public Long getId() {
         return id;
     }
-
     public void setId(Long id) {
         this.id = id;
     }
-
     public String getName() {
         return name;
     }
-
     public void setName(String name) {
         this.name = name;
     }
-
     public boolean isActive() {
         return active;
     }
-
     public void setActive(boolean active) {
         this.active = active;
     }
-
     public LocalDate getLastAccess() {
         return lastAccess;
     }
-
     public void setLastAccess(LocalDate lastAccess) {
         this.lastAccess = lastAccess;
     }
-
     public String getPassword() {
         return password;
     }
-
     public void setPassword(String password) {
         this.password = password;
     }
-
     public String getLogin() {
         return login;
     }
-
     public void setLogin(String login) {
         this.login = login;
     }
-
     public Wallet getWallet() {
         return wallet;
     }
-
     public void setWallet(Wallet wallet) {
         this.wallet = wallet;
     }

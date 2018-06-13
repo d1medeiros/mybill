@@ -12,6 +12,9 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 import java.time.LocalDate;
 
@@ -22,6 +25,18 @@ public class App {
         SpringApplication.run(App.class, args);
     }
 
+//    @Bean
+//    public WebMvcConfigurer corsConfigurer() {
+//        return new WebMvcConfigurerAdapter() {
+//            @Override
+//            public void addCorsMappings(CorsRegistry registry) {
+//                registry.addMapping("/user").allowedOrigins("http://localhost:3000");
+////                registry.addMapping("/user").allowedMethods("PUT");
+////                registry.addMapping("/user").allowedHeaders("*");
+//            }
+//        };
+//    }
+
     @Bean
     public CommandLineRunner demo(UserService userService, PaidAndWalletService paidAndWalletService, ScheduleAndWalletService scheduleAndWalletService) {
         return (args) -> {
@@ -29,18 +44,35 @@ public class App {
             User user = new User();
             user.setId(1l);
             user.setName("Diego");
-            user.setLogin("aian");
-            user.setPassword("1234");
+            user.setLogin("diego");
+            user.setPassword("12345");
 
             User userSaved = userService.prepareToAndSave(user);
 
             System.out.println(SecurityToken.generateHash(user));
 
+            LocalDate now = LocalDate.now();
+
             Paid paid = new Paid();
             paid.setName("pizza");
             paid.setPrice(200.22);
-            paid.setPayday(LocalDate.now());
+            paid.setPayday(now);
             paid.setBillType(BillType.GASTOS);
+            paidAndWalletService.save(userSaved.getWallet(), paid);
+
+            paid = new Paid();
+            paid.setName("freela");
+            paid.setPrice(800.20);
+            paid.setPayday(now);
+            paid.setBillType(BillType.GANHO);
+            paidAndWalletService.save(userSaved.getWallet(), paid);
+
+            paid = new Paid();
+            paid.setName("freela");
+            paid.setPrice(800.20);
+            now = now.minusMonths(1);
+            paid.setPayday(now);
+            paid.setBillType(BillType.GANHO);
             paidAndWalletService.save(userSaved.getWallet(), paid);
 
             Schedule schedule = new Schedule();
@@ -48,6 +80,14 @@ public class App {
             schedule.setPrice(800.00);
             schedule.setDayToPay(10);
             schedule.setBillType(BillType.GASTOS);
+            scheduleAndWalletService.save(userSaved.getWallet(), schedule);
+
+
+            schedule = new Schedule();
+            schedule.setName("salario");
+            schedule.setPrice(1800.00);
+            schedule.setDayToPay(5);
+            schedule.setBillType(BillType.GANHO);
             scheduleAndWalletService.save(userSaved.getWallet(), schedule);
 
 
