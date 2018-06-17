@@ -1,7 +1,7 @@
 package com.dmedeiros.mybill;
 
-import com.dmedeiros.mybill.bill.model.Paid;
 import com.dmedeiros.mybill.bill.model.BillType;
+import com.dmedeiros.mybill.bill.model.Paid;
 import com.dmedeiros.mybill.bill.model.Schedule;
 import com.dmedeiros.mybill.bill.service.PaidAndWalletService;
 import com.dmedeiros.mybill.bill.service.ScheduleAndWalletService;
@@ -12,9 +12,6 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 import java.time.LocalDate;
 
@@ -61,6 +58,20 @@ public class App {
             paidAndWalletService.save(userSaved.getWallet(), paid);
 
             paid = new Paid();
+            paid.setName("pao");
+            paid.setPrice(20.20);
+            paid.setPayday(now);
+            paid.setBillType(BillType.GASTOS);
+            paidAndWalletService.save(userSaved.getWallet(), paid);
+
+            paid = new Paid();
+            paid.setName("comida japonesa");
+            paid.setPrice(320.20);
+            paid.setPayday(now);
+            paid.setBillType(BillType.GASTOS);
+            paidAndWalletService.save(userSaved.getWallet(), paid);
+
+            paid = new Paid();
             paid.setName("freela");
             paid.setPrice(800.20);
             paid.setPayday(now);
@@ -74,6 +85,13 @@ public class App {
             paid.setPayday(now);
             paid.setBillType(BillType.GANHO);
             paidAndWalletService.save(userSaved.getWallet(), paid);
+
+
+
+
+
+
+
 
             Schedule schedule = new Schedule();
             schedule.setName("carro");

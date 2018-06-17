@@ -15,7 +15,7 @@ import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 
-
+@CrossOrigin(origins = "http://localhost:3000", maxAge = 36000, exposedHeaders = "Location")
 @RestController
 @RequestMapping(value = "/schedule")
 public class ScheduleController {
